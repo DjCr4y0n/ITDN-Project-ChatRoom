@@ -1,19 +1,57 @@
-import socket
+from flask import Flask, render_template, request, redirect, session, url_for
+from flask_socketio import SocketIO, emit, join_room, leave_room
+import os
 
-HOST = ''          # nasłuchuj na wszystkich interfejsach
-PORT = 5000
+app = Flask(__name__)
+app.secret_key = os.urandom(16)  # for sessions
+socketio = SocketIO(app)
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind((HOST, PORT))
-    s.listen()
-    print(f"Server listening on port {PORT}...")
-    conn, addr = s.accept()
-    with conn:
-        print("Connected by", addr)
-        while True:
-            data = conn.recv(1024)
-            if not data:
-                break
-            print("Received:", data.decode())
-            conn.sendall(b"Echo: " + data)
+#dictionary for users in chat room
+active_users = {}
+
+@app.route("/", methods = {'GET', 'POST'})
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+
+        if username in active_users:
+            return render_template('login.html', error = 'Username is taken')
+
+        active_users[username] = request.remote_addr
+        session['username'] = username
+        return render_template(url_for('chat'))
+    return render_template('login.html', error = None)
+
+@app.route('/chat')
+def chat():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('chat.html', username = session['username'])
+
+@socketio.on('connect')
+def handle_connect():
+    if 'username' not in session:
+        return False
+    username = session['username']
+    print(f"{username} connected")
+
+
+@socketio.on('chat_message')
+def handle_chat_message(data):
+    username = session.get("username", "anon")
+    msg = data.get("message", "")
+    print(f"{username}: {msg}")
+    emit("chat_message", {"username": username, "message": msg}, broadcast=True)
+
+@socketio.on("disconnect")
+def handle_disconnect():
+    username = session.get("username")
+    if username:
+        del active_users[username]
+        print(f"{username} disconnected")
+
+if __name__ == "__main__":
+    socketio.run(app, host="0.0.0.0", port=5000) #0.0.0.0, so it listen to devices from the network
+
+
+
