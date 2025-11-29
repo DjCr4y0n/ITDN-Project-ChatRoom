@@ -19,7 +19,7 @@ def login():
 
         active_users[username] = request.remote_addr
         session['username'] = username
-        return render_template('chat.html', error = None)
+        return redirect(url_for("chat"))
     return render_template('login.html', error = None)
 
 @app.route('/chat')
