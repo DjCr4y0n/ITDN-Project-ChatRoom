@@ -8,7 +8,9 @@
             crossorigin="anonymous"></script>
   </head>
   <body>
-    <h2>Chat Room – logged in as {{ username }}</h2>
+    <h2>Chat Room – logged in as {{ socket.on("connect", () => {
+        username;
+      }); }}</h2>
     <div id="chatbox" style="border:1px solid #ccc;height:300px;overflow:auto;"></div>
     <input id="msgInput" autocomplete="off" placeholder="Type your message..."/>
     <button id="sendBtn">Send</button>
