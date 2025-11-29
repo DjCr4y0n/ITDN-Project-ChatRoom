@@ -8,15 +8,15 @@
             crossorigin="anonymous"></script>
   </head>
   <body>
-    <h2>Chat Room – logged in as {{ username }}</h2>
-    <div id="messages" style="border:1px solid #ccc;height:300px;overflow:auto;"></div>
-    <input id="msgInput" autocomplete="off" />
+    <h2>Chat Room – logged in as {{ data.username }}</h2>
+    <div id="chatbox" style="border:1px solid #ccc;height:300px;overflow:auto;"></div>
+    <input id="msgInput" autocomplete="off" placeholder="Type your message..."/>
     <button id="sendBtn">Send</button>
 
     <script>
       const socket = io();  // connects back to same host/port
 
-      const messagesDiv = document.getElementById("messages");
+      const messagesDiv = document.getElementById("chatbox");
       const input = document.getElementById("msgInput");
       const sendBtn = document.getElementById("sendBtn");
 
