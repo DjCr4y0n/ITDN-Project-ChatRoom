@@ -1,20 +1,36 @@
-<!doctype html>
-<html>
+<!-- File: `templates/login.html` -->
+<html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Login</title>
-  </head>
-  <body>
-    <h2>Enter your username</h2>
-    <form method="post">
-      <label>Username:
-        <input type="text" name="username" required />
-      </label><br>
-      <button type="submit">Enter</button>
-    </form>
 
-    {% if error %}
-      <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <!-- IDE-friendly absolute path (helps PyCharm resolve the file) -->
+    <link rel="stylesheet" href="/static/login.css">
+
+    <!-- Runtime link used by Flask -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+  </head>
+
+  <body>
+    <div class="login-wrapper">
+      <div class="login-container">
+
+        <h2 class="login-title">Login</h2>
+
+        <form method="post" class="login-form" autocomplete="on">
+          <label class="login-label">
+            Username:
+            <input type="text" name="username" class="login-input" required placeholder="Enter username" autocomplete="username">
+          </label>
+
+          <button type="submit" class="login-btn">Enter</button>
+        </form>
+
+        {% if error %}
+          <p class="login-error" role="alert">{{ error }}</p>
+        {% endif %}
+      </div>
+    </div>
   </body>
 </html>

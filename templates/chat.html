@@ -2,45 +2,33 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Chat Room</title>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"
-            integrity="sha384-..."
-            crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
   </head>
   <body>
-    <h2>Chat Room – logged in as {{ username }}</h2>
-    <div id="chatbox" style="border:1px solid #ccc;height:300px;overflow:auto;"></div>
-    <input id="msgInput" autocomplete="off" placeholder="Type your message..."/>
-    <button id="sendBtn">Send</button>
+    <div class="chat-wrapper">
+      <div class="chat-container">
+        <div class="chat-header">
+          <div class="chat-title">Chat</div>
+          <div class="chat-username">{{ username }}</div>
+        </div>
 
-    <script>
-      const socket = io();  // connects back to same host/port
+        <div id="chatbox" aria-live="polite"></div>
 
-      const messagesDiv = document.getElementById("chatbox");
-      const input = document.getElementById("msgInput");
-      const sendBtn = document.getElementById("sendBtn");
+        <div class="chat-input-row">
+          <input id="msgInput" placeholder="Type..." autocomplete="off" />
+          <button id="sendBtn">Send</button>
+        </div>
+      </div>
+    </div>
 
-      function addMessage(text) {
-        const p = document.createElement("p");
-        p.innerText = text;
-        messagesDiv.appendChild(p);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-      }
+    <!-- Load a Socket.IO client that likely matches modern python-socketio servers (v4) -->
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <!-- Optional fallback to the server-served client (can be removed once CDN is confirmed working) -->
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
 
-      socket.on("chat_message", (data) => {
-        addMessage(`${data.username}: ${data.message}`);
-      });
-
-      sendBtn.onclick = function() {
-        const text = input.value.trim();
-        if (!text) return;
-        socket.emit("chat_message", {message: text});
-        input.value = "";
-      };
-
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") sendBtn.click();
-      });
-    </script>
+    <!-- Your client logic -->
+    <script src="{{ url_for('static', filename='chat.js') }}" defer></script>
   </body>
 </html>

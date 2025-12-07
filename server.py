@@ -51,7 +51,8 @@ def handle_disconnect():
         print(f"{username} disconnected")
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000) #0.0.0.0, so it listen to devices from the network
+    socketio.run(app, host="0.0.0.0", port=5000, allow_unsafe_werkzeug=True)
+
 
 
 
