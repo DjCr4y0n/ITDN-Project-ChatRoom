@@ -14,7 +14,15 @@
           <div class="chat-username">{{ username }}</div>
         </div>
 
-        <div id="chatbox" aria-live="polite"></div>
+        <div id="chatbox" aria-live="polite">
+          <ul id="messagesList">
+            {% for k, v in messages %}
+              <li class="chat-message">
+                <strong>{{ k }}</strong>: {{ v }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
 
         <div class="chat-input-row">
           <input id="msgInput" placeholder="Type..." autocomplete="off" />
