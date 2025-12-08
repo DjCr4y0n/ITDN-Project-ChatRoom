@@ -18,9 +18,9 @@
           <ul id="messagesList">
             {% for username, user_messages in messages.items() %}
               {% for m in user_messages %}
-                <li class="chat-message">
+                <div class="chat-message">
                   <strong>{{ username }}</strong>: {{ m }}
-                </li>
+                </div>
               {% endfor %}
             {% endfor %}
           </ul>
