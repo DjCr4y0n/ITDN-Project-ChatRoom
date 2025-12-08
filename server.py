@@ -33,6 +33,7 @@ def handle_connect():
     if 'username' not in session:
         return False
     username = session['username']
+    emit("chat_message", {"message": f"{username} just joined!"}, broadcast=True)
     print(f"{username} connected")
 
 
@@ -49,6 +50,7 @@ def handle_disconnect():
     if username:
         del active_users[username]
         print(f"{username} disconnected")
+        emit("chat_message", {"message": f"{username} just left!"}, broadcast=True)
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000, allow_unsafe_werkzeug=True)
