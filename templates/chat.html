@@ -16,10 +16,12 @@
 
         <div id="chatbox" aria-live="polite">
           <ul id="messagesList">
-            {% for k, v in messages %}
-              <li class="chat-message">
-                <strong>{{ k }}</strong>: {{ v }}
-              </li>
+            {% for username, user_messages in messages.items() %}
+              {% for m in user_messages %}
+                <li class="chat-message">
+                  <strong>{{ username }}</strong>: {{ m }}
+                </li>
+              {% endfor %}
             {% endfor %}
           </ul>
         </div>
