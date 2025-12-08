@@ -15,15 +15,13 @@
         </div>
 
         <div id="chatbox" aria-live="polite">
-          <ul id="messagesList">
-            {% for username, user_messages in messages.items() %}
-              {% for m in user_messages %}
-                <div class="chat-message">
-                  <strong>{{ username }}</strong>: {{ m }}
-                </div>
-              {% endfor %}
+          {% for username, user_messages in messages.items() %}
+            {% for m in user_messages %}
+              <div class="chat-message">
+                <strong>{{ username }}</strong>: {{ m }}
+              </div>
             {% endfor %}
-          </ul>
+          {% endfor %}
         </div>
 
         <div class="chat-input-row">
